@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 import json5
 import re
 
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
 from langchain_community.document_loaders import TextLoader
 from langchain_text_splitters import MarkdownHeaderTextSplitter
