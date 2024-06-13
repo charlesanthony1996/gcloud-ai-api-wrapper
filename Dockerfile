@@ -11,6 +11,7 @@ COPY . /app
 RUN pip install -r requirements.txt
 
 # Make port 5000 available to the world outside this container
+# EXPOSE 6001
 EXPOSE 8080
 
 ENV OPENAI_API_KEY=sk-proj-ZDINUmeoDvJo6WNibHv0T3BlbkFJdldHxoxC6gWTGIez9kYW
@@ -18,6 +19,7 @@ ENV GROQ_API_KEY=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
 ENV FLASK_ENV=development
 ENV FLASK_APP=llm_backend.py
 ENV PORT=8080
+# ENV PORT=6001
 
 # Define environment variable
 # ENV MODEL_NAME=gpt-3.5-turbo
