@@ -207,6 +207,7 @@ class GroqClient(BaseLLMClient):
         )
 
 
+
 if config['llm_type'] == 'openAI':
     client = OpenAIClient(api_key=os.getenv('OPENAI_API_KEY'))
 elif config['llm_type'] == 'groq':
@@ -252,6 +253,10 @@ def explain_hate_speech():
 
     except Exception as e:  
         return jsonify({"error": str(e)}), 700
+
+@app.route('/')
+def home():
+    return jsonify({"message": "AI_API-Wrapper Service Running"})
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 8080))
