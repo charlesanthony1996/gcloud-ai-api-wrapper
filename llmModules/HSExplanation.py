@@ -11,7 +11,7 @@ from langchain_groq import ChatGroq
 
 import re
 
-from .globImports import llm_groq, llm_openai, hs_store
+from .globImports import llm_groq, hs_store
 
 # Examples for few-shot learning
 explanation_examples = [

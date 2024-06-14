@@ -18,6 +18,12 @@ import requests
 # Counter Speech Generation
 ##############################################
 
+llm_groq = ChatGroq(
+temperature=1,
+model_name = "mixtral-8x7b-32768",
+#model_kwargs={"top_p":0.35}
+)
+
 cs_examples = [
     {"input": "This is Hate Speech: 'All Muslims should be deported, no one wants them here.' Please generate counter speech for it of the following type: Facts", "output": "Then why did we ask them to come in the first place, wasn't it top save our NHS, run the trains and post office. Non of those were doing very well last time I looked, I think we might actually still bneed them.", "cs_type": 'Facts'},
     {"input": "This is Hate Speech: 'Muslims had destroyed a Christian statue in Italy. Italy should ask itself why they are allowed to build mosques and why is tolerating these despicable people.' Please generate counter speech for it of the following type: Hypocrisy", "output": "Why have we built Churches all over the world? How many holy buildings have we demolished over history? This is never acceptable, but can we really be casting the first stone?", "cs_type": 'Hypocrisy'},

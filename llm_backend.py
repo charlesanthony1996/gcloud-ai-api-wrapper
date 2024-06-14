@@ -34,9 +34,18 @@ with open('config.json') as config_file:
 # env variables
 openai_key = os.getenv('OPENAI_API_KEY')
 groq_key = os.getenv('GROQ_API_KEY')
-chosenLLM = config['GENERATING_CS_LLM']
+# chosenLLM = config['GENERATING_CS_LLM']
 # For using Local Ollama in config change it to this
 # "GENERATING_CS_LLM": "localOllama"
+
+
+
+if config['llm_type'] == 'openAI':
+    client = llmModules.OpenAIClient(api_key=os.getenv('OPENAI_API_KEY'))
+elif config['llm_type'] == 'groq':
+    client = llmModules.GroqClient(api_key=os.getenv('GROQ_API_KEY'))
+else:
+    raise ValueError("Unsupported LLM type specified in config.")
 
 # Route to check if filtered comment is HS
 @app.route('/api/analyze_hate_speech', methods=['POST'])
@@ -73,29 +82,33 @@ def generate_counter_speech():
         user_message = data.get('text', '')
         cs_type = data.get('cs_type', '')
         print(cs_type, user_message)
+        counter_speech_result = llmModules.cs_llm_prompting_calls(user_message, cs_type)
+        counter_speech_result = json5.loads(counter_speech_result)
+        print("counter speech:", counter_speech_result)
+        return {"counter_speech_result": counter_speech_result}, 200
         
-        if chosenLLM == "openaiORgroq":
+        # if chosenLLM == "openaiORgroq":
         
-            counter_speech_result = llmModules.cs_llm_prompting_calls(user_message, cs_type)
-            counter_speech_result = json5.loads(counter_speech_result)
-            print("counter speech:", counter_speech_result)
-            return {"counter_speech_result": counter_speech_result}, 200
-        else:
-            # Send the data to the other file's endpoint
-            url = "http://localollama:6002/api/genOllama"  # Change the URL if needed
-            payload = {
-                "message": user_message,
-                "cs_type": cs_type
-            }
-            response = requests.post(url, json=payload)
+        #     counter_speech_result = llmModules.cs_llm_prompting_calls(user_message, cs_type)
+        #     counter_speech_result = json5.loads(counter_speech_result)
+        #     print("counter speech:", counter_speech_result)
+        #     return {"counter_speech_result": counter_speech_result}, 200
+        # else:
+        #     # Send the data to the other file's endpoint
+        #     url = "http://localollama:6002/api/genOllama"  # Change the URL if needed
+        #     payload = {
+        #         "message": user_message,
+        #         "cs_type": cs_type
+        #     }
+        #     response = requests.post(url, json=payload)
             
-            if response.status_code == 200:
-                counter_speech_result = response.json()
-            else:
-                counter_speech_result = f"Error: {response.status_code}, {response.text}"
+        #     if response.status_code == 200:
+        #         counter_speech_result = response.json()
+        #     else:
+        #         counter_speech_result = f"Error: {response.status_code}, {response.text}"
             
-            print("Ollama response:", counter_speech_result)
-            return jsonify({"counter_speech_result": counter_speech_result}), 200
+        #     print("Ollama response:", counter_speech_result)
+        #     return jsonify({"counter_speech_result": counter_speech_result}), 200
 
     except Exception as e:  
         return jsonify({"error": str(e)}), 700
