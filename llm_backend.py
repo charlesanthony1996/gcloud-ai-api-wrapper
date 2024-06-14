@@ -114,11 +114,11 @@ return_source_documents = True,
 )
 
 def llm_prompting_calls(message):
-    #result = qa_with_source_few_shot.invoke(f"Do you think this comment is hate speech? Comments: {message}. Please answer a. Yes or b. No for each comment. Format the response in the following JSON-Format: {{\"Comment\": \"\", \"Answer\": \"\",  \"HS_type\": \"\"}}")        
-    #result = re.sub('\\\\', '', result["result"])
-    #result = re.sub('\\n','', result)
-    #result = re.sub('\\n','', result)
-    #result = re.sub('""', '"', result) # to check for issue of double quotes
+    result = qa_with_source_few_shot.invoke(f"Do you think this comment is hate speech? Comments: {message}. Please answer a. Yes or b. No for each comment. Format the response in the following JSON-Format: {{\"Comment\": \"\", \"Answer\": \"\",  \"HS_type\": \"\"}}")        
+    result = re.sub('\\\\', '', result["result"])
+    result = re.sub('\\n','', result)
+    result = re.sub('\\n','', result)
+    result = re.sub('""', '"', result) # to check for issue of double quotes
 
     client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
     return client.chat.completions.create(
